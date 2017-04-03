@@ -1,12 +1,10 @@
 Project numero uno - Flicks
 
-Flicks is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
-
 Time spent: 24 hours 
 
-## User Stories
+# User Stories
 
-The following **required** functionality is completed:
+ Required
 
 - [x] User can view a list of movies currently playing in theaters. Poster images load asynchronously.
 - [x] User can view movie details by tapping on a cell.
@@ -14,7 +12,7 @@ The following **required** functionality is completed:
 - [x] User sees an error message when there is a network error. (Partial)
 - [x] User can pull to refresh the movie list.
 
-The following **optional** features are implemented:
+Optional
 
 - [x] Add a tab bar for now Playing and top rated movies.
 - [x] Add a search bar.
@@ -23,10 +21,7 @@ The following **optional** features are implemented:
 - [x] Customize the navigation bar.
 
 
-
-## Video Walkthrough
-
-
+![alt tag](https://github.com/onlynaresh/Flicks/blob/master/flicksv1.gif) 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
