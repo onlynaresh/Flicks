@@ -29,7 +29,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 References:
 
-1)Numerous google searches.
+1)Numerous google searches<br>
 2)https://github.com/DeekshaPrabhakar/Flicks
 
 
