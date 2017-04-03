@@ -7,6 +7,7 @@ target 'MoviesApp' do
 
   # Pods for MoviesApp
  pod 'AFNetworking'
+ 
  pod 'MBProgressHUD'
  
 end

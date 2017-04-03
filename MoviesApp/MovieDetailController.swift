@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MovieDetailController: UIViewController {
+class MovieDetailController: UIViewController ,UIGestureRecognizerDelegate{
 
     @IBOutlet weak var movieDetailImage: UIImageView!
    
@@ -16,7 +16,7 @@ class MovieDetailController: UIViewController {
     @IBOutlet weak var movieDetailTitle: UILabel!
     @IBOutlet weak var infoView: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
-    var movie:NSDictionary!
+    var movie:Movie!
 
     
     override func viewDidLoad() {
@@ -24,23 +24,94 @@ class MovieDetailController: UIViewController {
   
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: (scrollView.frame.size.height + (infoView.frame.origin.y - infoView.frame.size.height)))
         
-        movieDetailTitle.text = movie["title"] as? String
-        movieDetailOverview.text = movie["overview"] as? String
+        let title = movie.title
+        let overview = movie.overview
         
+        movieDetailTitle.text = title
+        movieDetailTitle.sizeToFit()
+        movieDetailOverview.text = overview
         movieDetailOverview.sizeToFit()
         
-        if let posterPath = movie["poster_path"] as? String {
-            let posterBaseUrl = "https://image.tmdb.org/t/p/w500"
-            let posterUrl = NSURL(string: posterBaseUrl + posterPath)
-            movieDetailImage.setImageWith(posterUrl! as URL)
+        movieDetailImage.contentMode = .scaleAspectFit
+       
+        
+        if  movie.posterPath != nil {
+            posterlowHighRes()
         }
-        else {
-            
-            movieDetailImage.image = nil
-        }
+        
+        navigationItem.title = title
+        
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: Selector(("toggleDetailsView:")))
+        swipeUp.direction = UISwipeGestureRecognizerDirection.up
+        swipeUp.delegate = self
+        self.view.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: Selector(("toggleDetailsView:")))
+        swipeDown.direction = UISwipeGestureRecognizerDirection.down
+        swipeDown.delegate = self
+        self.view.addGestureRecognizer(swipeDown)
         
 
         
+    }
+    
+    
+    func posterlowHighRes() {
+        let smallImageRequest = NSURLRequest(url: NSURL(string: movie.posterPathLowResolution!)! as URL)
+        let largeImageRequest = NSURLRequest(url: NSURL(string: movie.posterPathHighResolution!)! as URL)
+        
+        self.movieDetailImage.setImageWith(
+            smallImageRequest as URLRequest,
+            placeholderImage: nil,
+            success: { (smallImageRequest, smallImageResponse, smallImage) -> Void in
+                
+                              self.movieDetailImage.alpha = 0.0
+                self.movieDetailImage.image = smallImage;
+                
+                UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                    
+                    self.movieDetailImage.alpha = 1.0
+                    
+                }, completion: { (sucess) -> Void in
+                    
+                    
+                    self.movieDetailImage.setImageWith(
+                        largeImageRequest as URLRequest,
+                        placeholderImage: smallImage,
+                        success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
+                            
+                            self.movieDetailImage.image = largeImage;
+                            
+                    },
+                        failure: { (request, response, error) -> Void in
+                            
+                    })
+                })
+        },
+            failure: { (request, response, error) -> Void in
+                        })
+    }
+    
+    func toggleDetailsView(gesture: UIGestureRecognizer){
+        let top:CGPoint = infoView.frame.origin
+        let middle:CGPoint = CGPoint(x: infoView.frame.origin.x, y:(infoView.frame.size.height/2) as CGFloat)
+        if let swipeGesture = gesture as? UISwipeGestureRecognizer {
+            
+            switch swipeGesture.direction {
+            case UISwipeGestureRecognizerDirection.up:
+                
+                UIView.animate(withDuration: 1.5, animations: {
+                    self.infoView.frame.origin = top
+                })
+            case UISwipeGestureRecognizerDirection.down:
+                
+                UIView.animate(withDuration: 1.5, animations: {
+                    self.infoView.frame.origin = middle
+                })
+            default:
+                break
+            }
+        }
     }
 
     override func didReceiveMemoryWarning() {

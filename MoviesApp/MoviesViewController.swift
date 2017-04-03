@@ -21,7 +21,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     @IBOutlet weak var errorLabel: UILabel!
     
-    var movies:[NSDictionary]?
+    var movies:[Movie]?
     
     var endpoint:String!
     
@@ -45,13 +45,15 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         
         networkRequest()
+        refreshControl.endRefreshing()
             }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        movies = searchText.isEmpty ? movies : movies?.filter {
-            String(describing: $0["title"]).range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
-        }
+        movies = (movies?.filter({(movieObj: Movie) -> Bool in
+            return (movieObj.title.range(of: searchText, options: .caseInsensitive) != nil)
+        }))!
+
         movieTableView.reloadData()
     }
     
@@ -69,7 +71,7 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     
     func networkRequest()
     {
-        var httpResponse:HTTPURLResponse?=nil
+       // var httpResponse:HTTPURLResponse?=nil
         let buildReuestUrl = "https://api.themoviedb.org/3/movie/\(endpoint as String)?api_key=6adac74ffbb3c0fc636a7c5e51630b21"
         let requestUrl = URL(string:buildReuestUrl)
         let request = URLRequest(url: requestUrl!)
@@ -89,12 +91,24 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
                      print("\(error)")
                     self.showErrorView()
                 }
-               else  if let data = data {
-                     MBProgressHUD.hide(for: self.view, animated: true)
-                    if let responseDictionary = try! JSONSerialization.jsonObject(
-                        with: data, options:[]) as? NSDictionary {
-                    self.movies=responseDictionary["results"] as? [NSDictionary]
-                        self.movieTableView.reloadData()
+                else if let data = data {
+                    if let responseDictionary = try! JSONSerialization.jsonObject(with: data, options:[]) as? NSDictionary {
+                        NSLog("response: \(responseDictionary)")
+                        
+                        MBProgressHUD.hide(for: self.view, animated: true)
+
+                        if let allMovies = responseDictionary["results"] as? [NSDictionary] {
+                            var moviesList = [Movie]()
+                            var movieObj:Movie
+                            
+                            for mObj in allMovies
+                            {
+                                movieObj =  Movie(dict: mObj)
+                                moviesList.append(movieObj)
+                            }
+                             self.movies = moviesList
+                             self.movieTableView.reloadData()
+                        }
                     }
                 }
                 
@@ -111,36 +125,18 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
-        let cell = movieTableView.dequeueReusableCell(withIdentifier: "MovieCell",for:indexPath) as! MovieCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         
         let movie = movies![indexPath.row]
+        cell.movieTitle.text = movie.title
+        cell.movieOverview.text = movie.overview
+        cell.movieOverview.sizeToFit()
+       
         
-        let title=movie["title"] as! String
-        
-        let overview=movie["overview"] as! String
-        
-        let baseUrl = "https://image.tmdb.org/t/p/w500"
-        if let posterPath = movie["poster_path"] as? String {
-            let posterUrl = NSURL(string: baseUrl + posterPath) as! URL
-            let posterRequest = NSURLRequest(url: posterUrl)
-            cell.movieImage.setImageWith(
-                posterRequest as URLRequest,
-                placeholderImage: nil,
-                success: { (posterRequest, posterResponse, poster) -> Void in
-                    if posterResponse != nil {
-                        cell.movieImage.alpha = 0.0
-                        cell.movieImage.image = poster
-                        UIView.animate(withDuration: 1.0, animations: { () -> Void in
-                            cell.movieImage.alpha = 1.0
-                        })
-                    } else {
-                        cell.movieImage.image = poster
-                    }
-            })
+        if  movie.posterPath != nil {
+            let imageUrl = NSURL(string: movie.posterPath!)
+            cell.movieImage.setImageWith(imageUrl as! URL)
         }
-        cell.movieTitle.text=title
-        cell.movieOverview.text=overview
-        
         return cell
     }
 
