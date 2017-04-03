@@ -21,10 +21,15 @@ Optional
 - [x] Customize the navigation bar.
 
 
+
 ![alt tag](https://github.com/onlynaresh/Flicks/blob/master/flicksv1.gif) 
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 
+References:
+
+1)Numerous google searches.
+2)https://github.com/DeekshaPrabhakar/Flicks
 
 
