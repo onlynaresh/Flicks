@@ -74,11 +74,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MoviesApp/MoviesViewController.swift"
-            timestampString = "512949019.902427"
+            timestampString = "513103318.432494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "189"
-            endingLineNumber = "189">
+            startingLineNumber = "181"
+            endingLineNumber = "181">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -136,11 +136,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MoviesApp/MoviesViewController.swift"
-            timestampString = "512949019.902427"
+            timestampString = "513103318.432494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "180"
-            endingLineNumber = "180"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
             landmarkName = "showErrorView()"
             landmarkType = "7">
          </BreakpointContent>
@@ -168,11 +168,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MoviesApp/MoviesViewController.swift"
-            timestampString = "512949019.902427"
+            timestampString = "513103318.432494"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188">
+            startingLineNumber = "180"
+            endingLineNumber = "180">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -236,6 +236,22 @@
             startingLineNumber = "49"
             endingLineNumber = "49"
             landmarkName = "refreshControlAction(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MoviesApp/MoviesViewController.swift"
+            timestampString = "513103318.432494"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "131"
+            endingLineNumber = "131"
+            landmarkName = "tableView(_:cellForRowAt:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

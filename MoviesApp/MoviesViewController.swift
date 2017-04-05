@@ -126,17 +126,9 @@ class MoviesViewController: UIViewController,UITableViewDataSource,UITableViewDe
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
+    
+         cell.movie = movies![indexPath.row]
         
-        let movie = movies![indexPath.row]
-        cell.movieTitle.text = movie.title
-        cell.movieOverview.text = movie.overview
-        cell.movieOverview.sizeToFit()
-       
-        
-        if  movie.posterPath != nil {
-            let imageUrl = NSURL(string: movie.posterPath!)
-            cell.movieImage.setImageWith(imageUrl as! URL)
-        }
         return cell
     }
 
